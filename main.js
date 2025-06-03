@@ -1,6 +1,9 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
+const $sprite = document.querySelector('#sprite')
+const $bricks = document.querySelector('#bricks')
+
 canvas.width = 448
 canvas.height = 400
 
@@ -37,8 +40,7 @@ function  drawBall(){
 }
 
 function drawPaddle(){
-ctx.fillStyle = '#09f'
-ctx.fillRect(paddleX, paddleY, paddleWidth, paddleHeight)
+ctx.drawImage($sprite, 29, 174, paddleWidth, paddleHeight, paddleX, paddleY, paddleWidth, paddleHeight)
 }
 
 function drawBricks(){
@@ -61,7 +63,9 @@ function ballMovement(){
     }
 
     const isBallSameXAsPaddle = x > paddleX && x < paddleX + paddleWidth;
-    if(){
+    const isBallTouchingPaddle = y + dy > paddleY
+    
+    if(isBallTouchingPaddle && isBallSameXAsPaddle){
         dy = -dy
         // Game over y se reinicia
     }else if(y + dy > canvas.height - ballRadius){
