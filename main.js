@@ -34,11 +34,11 @@ let leftPressed = false;
 // Variables de ladrillos
 const brickRowCount = 6;
 const brickColumnCount = 13;
-const brickWidth = 30;
-const brickHeight = 14;
-const brickPadding = 2;
+const brickWidth = 32;
+const brickHeight = 16;
+const brickPadding = 0;
 const brickOffsetTop = 80;
-const brickOffsetLeft = 30;
+const brickOffsetLeft = 16;
 const bricks = [];
 
 const BRICK_STATUS = {
@@ -72,11 +72,36 @@ ctx.drawImage($sprite, 29, 174, paddleWidth, paddleHeight, paddleX, paddleY, pad
 }
 
 function drawBricks(){
+    for (let c = 0; c < brickColumnCount; c++){
+    for (let r = 0; r < brickRowCount; r++){
+        const currentBrick = bricks[c][r]
+        if(currentBrick.status === BRICK_STATUS.DESTROYED)
+        continue;
 
+        const clipX = currentBrick.color * 32
+        ctx.drawImage(
+            $bricks, clipX, 0, 31, 14, currentBrick.x, currentBrick.y, brickWidth, brickHeight
+        )
+        }
+    }
 }
 
 function colisionDetection(){
+    for(let c = 0; c < brickColumnCount; c++){
+        for(let r = 0; r < brickRowCount; r++){
+            const currentBrick = bricks[c][r]
+            if(currentBrick.status === BRICK_STATUS.DESTROYED) continue
+                const isBallSameXAsBrick = x > currentBrick.x && x < currentBrick.x + brickWidth
+                const isBallSameYAsBrick =
+                y > currentBrick.y && y < currentBrick.y + brickHeight
 
+
+            if(isBallSameXAsBrick && isBallSameYAsBrick){
+                dy = -dy
+                currentBrick.status = BRICK_STATUS.DESTROYED
+            }
+        }
+    }
 }
 
 function ballMovement(){
@@ -115,6 +140,7 @@ function cleanCanvas(){
  ctx.clearRect(0, 0, canvas.width, canvas.height)
 }
 
+// Detecta que botón presionamos para mover la pala
 function initEvents(){
     document.addEventListener('keydown', keyDownHandler)
     document.addEventListener('keyup', keyupHandler)
@@ -138,6 +164,7 @@ function initEvents(){
     }
 }
 
+// Dibujar 
 function draw(){
     // Limpiar lo dibujado
     cleanCanvas()
