@@ -31,6 +31,34 @@ let paddleY = canvas.height - paddleHeight - 10;
 let rightPressed = false;
 let leftPressed = false;
 
+// Variables de ladrillos
+const brickRowCount = 6;
+const brickColumnCount = 13;
+const brickWidth = 30;
+const brickHeight = 14;
+const brickPadding = 2;
+const brickOffsetTop = 80;
+const brickOffsetLeft = 30;
+const bricks = [];
+
+const BRICK_STATUS = {
+    ACTIVE: 1,
+    DESTROYED: 0,
+}
+
+for (let c = 0; c < brickColumnCount; c++){
+    bricks[c] = [] //Inicializamos con un array vacío
+    for(let r = 0; r < brickRowCount; r++){
+        // Calculamos la posicion del ladrillo en la pantalla
+        const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft
+        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop
+        // Asignar un color aleatorio a cada ladrillo
+        const random = Math.floor(Math.random() * 8) //Recupera un número al azar del 0 al 7
+        // Guardamos la información de cada ladrillo
+        bricks[c][r] = {x: brickX, y: brickY, status: BRICK_STATUS.ACTIVE, color: random}
+    }
+}
+
 function  drawBall(){
     ctx.beginPath()
     ctx.arc(x,y, ballRadius, 0, Math.PI * 2)
